@@ -1,51 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>黑猫主页</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: monospace;
-      font-size: 30px;
-    }
-    .page {
-      width: 100vw;
-      height: 100vh;
-      position: relative;
-    }
-    .letter{
-      height: 80vh;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-    .letter-cover-content {
-      width: fit-content;
-      position: absolute;
-      top: 34vh;
-      left: 34vw;
-      transform: rotate(-12deg);
-    }
-    .letter-cover-from {
-      width: fit-content;
-      position: absolute;
-      font-size: 20px;
-      top: 65vh;
-      left: 64vw;
-      transform: rotate(-12deg);
-    }
-  </style>
-</head>
-<body>
-  <div class="page" data-pno="1">
-    <img src="./resources/img/tegami.png" alt="信封" class="letter">
-    <div class="letter-cover-content">ひとなちゃんへ</div>
-    <div class="letter-cover-from">by 小东人鱼午安社</div>
-  </div>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>黑猫主页</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: monospace;
+        font-size: 30px;
+        cursor: url("./resources/img/aho.png"), url("./resources/img/aho.cur"), pointer;
+      }
+      .page {
+        width: 100vw;
+        height: 100vh;
+        position: relative;
+        display: none;
+      }
+      .letter {
+        height: 80vh;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page" id="p1">
+      <img src="./resources/img/tegami.png" alt="信封" class="letter" />
+    </div>
+    <div class="page" id="p2">寄语1</div>
+    <div class="page" id="p3">寄语2</div>
+    <div class="page" id="p4">寄语3</div>
+    <div class="page" id="p5">寄语4</div>
+    <script defer>
+      const localStorageKey = "hitonahenotegami_2022";
+      const totalPage = document.body.children.length - 1;
+      function getFixedPageNo(nextPage) {
+        if (nextPage <= 0 || nextPage > totalPage) {
+          return 1;
+        }
+        return nextPage;
+      }
+      let currentPage = getFixedPageNo(Number(localStorage.getItem(localStorageKey))) ?? 1;
+      function applyPage(pno) {
+        console.log(currentPage);
+        document.getElementById("p" + currentPage).style.display = "none";
+        currentPage = pno;
+        localStorage.setItem(localStorageKey, pno);
+        document.getElementById("p" + pno).style.display = "block";
+      }
+      document.body.addEventListener(
+        "click",
+        () => {
+          const nextPage = getFixedPageNo(currentPage + 1);
+          applyPage(nextPage);
+        },
+        false
+      );
+      applyPage(currentPage);
+    </script>
+  </body>
 </html>
